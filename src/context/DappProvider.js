@@ -2,16 +2,18 @@ import React, { useState, useEffect} from "react"
 import detectEthereumProvider from "../utilities/detect-provider";
 import { getChainId } from "../utilities/manage_chains";
 import { getAccounts } from "../utilities/manage_accounts";
+import { useMoralis } from "react-moralis";
 
 const DappContext = React.createContext();
 
 const DappProvider = ({children}) => {
+  const { Moralis } = useMoralis();
   const [hasProvider, setProvider] = useState(false);
   const [walletAddress, setWalletAddress] = useState();
   const [chainId, setChainId] = useState();
-  const [contractABI, setContractABI] = useState();
-  const [contractAddress, setContractAddress] = useState("Testing");
-  
+  const [nativeBalance, setNativeBalance] = useState();
+  const contractAddress = "0x097cbef8a739a056bbac30dae756a77ed84dc861";
+
   useEffect(() => {
     const detectProvider = async () => {
       const provider = await detectEthereumProvider();
@@ -30,6 +32,17 @@ const DappProvider = ({children}) => {
     getCurrentAccount();
   },[chainId, walletAddress, hasProvider]);
 
+  useEffect(() => {
+    const initializeWeb3 = async () => {
+      try {
+        await Moralis.enableWeb3();
+      }
+      catch(error){
+        console.log("Web3 Instance already created")
+      }
+    }
+    initializeWeb3();
+  },[Moralis])
   const setListeners = () => {
     if (hasProvider){
       window.ethereum.on('chainChanged', (chainId) => {
@@ -44,7 +57,7 @@ const DappProvider = ({children}) => {
   setListeners();
 
   return (
-      <DappContext.Provider value={{ contractAddress, hasProvider, walletAddress, chainId}}>
+      <DappContext.Provider value={{ contractAddress, hasProvider, walletAddress, chainId, nativeBalance, setNativeBalance }}>
         {children}
       </DappContext.Provider>
     );

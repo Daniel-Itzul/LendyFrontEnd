@@ -42,10 +42,6 @@ const UserCard = () => {
               </Text>
               <RegisteredContracts/>
               <Card.Section className={classes.footer}></Card.Section>
-              <AvgAlertsMonth/>
-              <Card.Section className={classes.footer}></Card.Section>
-              <AvgAlertsCostMonth/>
-              <Card.Section className={classes.footer}></Card.Section>
             </>
             <NativeBalance/>
         </Card>

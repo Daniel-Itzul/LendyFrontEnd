@@ -1,34 +1,68 @@
-import React from 'react';
-import { TextInput, NumberInput, Button, Container, Text, Anchor } from '@mantine/core';
-
+import React, { useEffect, useState } from 'react';
+import { TextInput, Button, Container } from '@mantine/core';
+import { getAbi } from '../../utilities/abi';
+import { useMoralis } from 'react-moralis';
+import { useDapp } from '../../context/DappProvider';
 const margins = 15;
 
 const RegistrationForm = () => {
+  const [registrationDeposit, setRegistrationDeposit] = useState("");
+  const [ clientContract, setClientContract ] = useState("")
+  const { Moralis } = useMoralis();
+  const {nativeBalance} = useDapp();
+  const register = async() => {
+    const options = {
+      contractAddress: "0x097cbeF8a739a056bBac30DAE756a77eD84dc861",
+      functionName: "registerClient",
+      abi: getAbi(),
+      msgValue: Moralis.Units.ETH(registrationDeposit),
+      params: {
+        _clientContract: clientContract
+      },
+    };
+    const result = await Moralis.executeFunction(options);
+    console.log(result)
+  }
+  useEffect (() => {  
+    const getRegistrationDeposit =  async() => {
+      const options = {
+        contractAddress: "0x097cbeF8a739a056bBac30DAE756a77eD84dc861",
+        functionName: "getRegistrationDeposit",
+        abi: getAbi(),
+        params: {
+        },
+      };
+      const result = await Moralis.executeFunction(options);
+      setRegistrationDeposit(Moralis.Units.FromWei(result.toString()));
+    };
+    getRegistrationDeposit();
+  },[Moralis]);
+  
   return (
     <Container>
-         <TextInput
+        {/*<TextInput
             style={{marginBottom:margins}}
             label="Dapp Name"
-        />
+        /> */}
         <TextInput
             style={{marginBottom:margins}}
             label="Contract to Register"
+            placeholder='Client Contract Address'
+            value={clientContract} onChange={(event) => setClientContract(event.target.value)} 
         />
-        <NumberInput
+        <TextInput
             style={{marginBottom:margins}}
             label="Your Native Balance"
-            defaultValue={90}
-            precision={6}
+            defaultValue={nativeBalance}
             disabled
         />
-        <NumberInput
+        <TextInput
             style={{marginBottom:margins}}
             label="Registration Cost (Native)"
-            defaultValue={0.1}
-            precision={6}
+            defaultValue={registrationDeposit}
             disabled
         />
-        <Button style={{marginBottom:margins}} > Register! </Button>
+        <Button onClick={register} style={{marginBottom:margins}} > Register! </Button>
     </Container>
   )
 }

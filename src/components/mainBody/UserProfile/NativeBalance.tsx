@@ -2,7 +2,7 @@ import React from 'react'
 import { Container, Group, Text, Button, createStyles } from '@mantine/core'
 import { useDapp } from '../../../context/DappProvider';
 import { useMoralis, useMoralisWeb3Api } from "react-moralis"; 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import nativeLogo from "../../../assets/icons/PrimaryToken.png";
 const logo = nativeLogo
 
@@ -30,10 +30,9 @@ const useStyles = createStyles((theme) => ({
 
 const NativeBalance = () => {
     const { classes } = useStyles();
-    const {walletAddress} = useDapp();
+    const {walletAddress, nativeBalance, setNativeBalance } = useDapp();
     const {Moralis} = useMoralis();
     const Web3Api = useMoralisWeb3Api();
-    const [balance, setBalance] = useState("");
     const getNative = () => {
       window.open("https://faucet.polygon.technology/", "_blank")
     }
@@ -42,10 +41,10 @@ const NativeBalance = () => {
         const result = await Web3Api.account.getNativeBalance({chain:"mumbai",address:walletAddress});
         const balanced = Moralis.Units.FromWei(result.balance);
         const balancedSkimmed = balanced.slice(0,5);
-        setBalance(balancedSkimmed);
+        setNativeBalance(balancedSkimmed);
       }
       getBalance();
-      }, [walletAddress]);
+      }, [walletAddress, setNativeBalance, Moralis, Web3Api]);
     
     return (
     <>
@@ -57,7 +56,7 @@ const NativeBalance = () => {
             <img className="logo_img" src={logo} width="50" height="50" alt=""/>
         </div>
         <Text align="right"size="xl" weight={700}>
-            {balance}
+            {nativeBalance}
         </Text>
         <Container style={{alignContent:"center"}}>
             <Button onClick={getNative}>

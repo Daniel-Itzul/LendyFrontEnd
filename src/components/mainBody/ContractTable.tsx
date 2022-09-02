@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { createStyles, Table, Checkbox, ScrollArea, Group, Text, Container } from '@mantine/core';
+import React, { useEffect, useState } from 'react';
+import { createStyles, Table, Checkbox, ScrollArea, Group, Container } from '@mantine/core';
 import KhronDrawer from './KhronDrawer';
 import FundingForm from './FundingForm'
 import RegistrationForm from './RegistrationForm';
+import { useDapp } from '../../context/DappProvider'
+import { useMoralisQuery } from 'react-moralis'
 
 const useStyles = createStyles((theme) => ({
     rowSelected: {
@@ -15,39 +17,49 @@ const useStyles = createStyles((theme) => ({
       marginLeft:20
     }
   }));
-
-interface TableSelectionProps {
-    data: { id: string; dappName: string; contractAddress: string; currentBalance: string; status: string;}[];
-}
   
-const ContractTable = ( { data }: TableSelectionProps ) => {
+const ContractTable = () => {
     const { classes, cx } = useStyles();
-    const [selection, setSelection] = useState('0');
-    const toggleRow = (id: string) =>
-        setSelection((current) =>
-        current === id ? "" : id);
-
-    const rows = data.map((item) => {
-        const selected = selection.includes(item.id);
+    const { walletAddress } = useDapp();
+    const [selection, setSelection] = useState("0");
+    const queryRegisteredContracts = useMoralisQuery(
+      "RegisteredContracts",
+      (query) => query.equalTo("requester", walletAddress),
+      [walletAddress],
+      {live:true}
+    );
+    const fetchedContracts = JSON.parse(JSON.stringify(queryRegisteredContracts.data, ["objectId","client","requester"]));
+    const firstContract = fetchedContracts.length > 0? fetchedContracts[0]["objectId"]: "0"; 
+    useEffect (() => {
+      const updateSelection =  () => {
+        setSelection(firstContract);
+      };
+      updateSelection();
+    },[firstContract]);
+    const toggleRow = (objectId: string) =>
+      setSelection((current:string) =>
+      current === objectId ? "" : objectId);
+    const rows = fetchedContracts.map((item: { objectId: string; client: string; }) => {
+        const selected = selection === item.objectId;
         return (
-            <tr key={item.id} className={cx({ [classes.rowSelected]: selected })}>
+            <tr key={item.objectId} className={cx({ [classes.rowSelected]: selected })}>
               <td>
                 <Checkbox
-                  checked={selection.includes(item.id)}
-                  onChange={() => toggleRow(item.id)}
+                  checked={selection.includes(item.objectId)}
+                  onChange={() => toggleRow(item.objectId)}
                   transitionDuration={0}
                 />
               </td>
-              <td>
+              {/*<td>
                 <Group spacing="sm">
                   <Text size="sm" weight={500}>
                     {item.dappName}
                   </Text>
                 </Group>
-              </td>
-              <td>{item.contractAddress}</td>
-              <td>{item.currentBalance}</td>
-              <td>{item.status}</td>
+              </td>*/}
+              <td>{item.client}</td>
+              {/*<td>{item.currentBalance}</td>*/}
+              {/*<td>{item.status}</td>*/}
               <td>
                 <Group spacing="sm">
                     <KhronDrawer title='Details' appearFrom='right' buttonVariant='subtle'>
@@ -60,35 +72,35 @@ const ContractTable = ( { data }: TableSelectionProps ) => {
         });
     
     return (
-        <ScrollArea>
-        <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
-            <thead>
-            <tr>
-                <th style={{ width: 40 }}>
-                </th>
-                <th>Dapp Name</th>
-                <th>Contract Address</th>
-                <th>Current Native Balance </th>
-                <th>Status</th>
-                <th>
-                  <Container>
-                    <KhronDrawer 
-                      title='Register Contract' 
-                      buttonRadius={'xl'} 
-                      buttonVariant={'white'} 
-                      buttonTitle='+' 
-                      appearFrom="right" 
-                    >
-                      <RegistrationForm/>
-                    </KhronDrawer>
-                  </Container>
-                </th>
-            </tr>
-            </thead>
-            <tbody>{rows}</tbody>
-        </Table>
-        </ScrollArea>
-    );
+      <ScrollArea>
+      <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
+          <thead>
+          <tr>
+              <th style={{ width: 40 }}>
+              </th>
+              {/*<th>Dapp Name</th>*/}
+              <th>Contract Address</th>
+              {/*<th>Current Native Balance </th>*/}
+              {/*<th>Status</th>*/}
+              <th>
+                <Container>
+                  <KhronDrawer 
+                    title='Register Contract' 
+                    buttonRadius={'xl'} 
+                    buttonVariant={'white'} 
+                    buttonTitle='+' 
+                    appearFrom="right" 
+                  >
+                    <RegistrationForm/>
+                  </KhronDrawer>
+                </Container>
+              </th>
+          </tr>
+          </thead>
+          <tbody>{rows}</tbody>
+      </Table>
+      </ScrollArea>
+  );
 }
 
 export default ContractTable
