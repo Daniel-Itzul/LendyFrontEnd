@@ -38,6 +38,12 @@ const UserCard = () => {
               <RegisteredContracts/>
               <Card.Section className={classes.footer}></Card.Section>
             </>
+            <>
+              <Text> Provider ID</Text>
+              <Text size='xs'> f25nml2cfbljvn4goqtclhifepvfnicv6g7mfmmvq</Text>
+              <Card.Section className={classes.footer}></Card.Section>
+            </>
+
             <LinkProvider/>
         </Card>
   )

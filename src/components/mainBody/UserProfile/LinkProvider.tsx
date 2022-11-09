@@ -28,9 +28,6 @@ const useStyles = createStyles((theme) => ({
 const LinkProvider = () => {
     const { classes } = useStyles();
     const {walletAddress, nativeBalance, setNativeBalance } = useDapp();
-    const getNative = () => {
-      window.open("https://faucet.polygon.technology/", "_blank")
-    }
     useEffect(() => {
       }, [walletAddress, setNativeBalance]);
     
@@ -38,7 +35,7 @@ const LinkProvider = () => {
     <>
       <Group position="apart" mt="sm">
         <Container style={{alignContent:"center"}}>
-            <Button onClick={getNative}>
+            <Button disabled={true}>
               Link Storage Provider
             </Button>
         </Container>

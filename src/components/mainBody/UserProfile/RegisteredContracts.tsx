@@ -11,7 +11,7 @@ const RegisteredContracts = () => {
               Maximum Amount to Loan
           </Text>
           <Text align="right" size="sm" color="white" weight={700}>
-              20 Fil
+              633 Fil
           </Text>
       </Group>
       <Group position="left" mt="xs">
@@ -19,7 +19,7 @@ const RegisteredContracts = () => {
               Amount Lent
           </Text>
           <Text align="right" size="sm" color="white" weight={700}>
-             15 Fil
+             100 Fil
           </Text>
       </Group>
     </>

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+
+/*import React, { useEffect, useState } from 'react';
 import { createStyles, Table, Checkbox, ScrollArea, Group, Container } from '@mantine/core';
 import KhronDrawer from './KhronDrawer';
 import FundingForm from './FundingForm'
 import RegistrationForm from './RegistrationForm';
 import { useDapp } from '../../context/DappProvider'
-import { useMoralisQuery } from 'react-moralis'
 
 const useStyles = createStyles((theme) => ({
     rowSelected: {
@@ -22,20 +22,14 @@ const ContractTable = () => {
     const { classes, cx } = useStyles();
     const { walletAddress } = useDapp();
     const [selection, setSelection] = useState("0");
-    const queryRegisteredContracts = useMoralisQuery(
-      "RegisteredContracts",
-      (query) => query.equalTo("requester", walletAddress),
-      [walletAddress],
-      {live:true}
-    );
-    const fetchedContracts = JSON.parse(JSON.stringify(queryRegisteredContracts.data, ["objectId","client","requester"]));
-    const firstContract = fetchedContracts.length > 0? fetchedContracts[0]["objectId"]: "0"; 
-    useEffect (() => {
+    
+    //const firstContract = fetchedContracts.length > 0? fetchedContracts[0]["objectId"]: "0"; 
+    /*useEffect (() => {
       const updateSelection =  () => {
         setSelection(firstContract);
       };
       updateSelection();
-    },[firstContract]);
+    },[firstContract]); * . /
     const toggleRow = (objectId: string) =>
       setSelection((current:string) =>
       current === objectId ? "" : objectId);
@@ -56,10 +50,10 @@ const ContractTable = () => {
                     {item.dappName}
                   </Text>
                 </Group>
-              </td>*/}
+              </td>
               <td>{item.client}</td>
-              {/*<td>{item.currentBalance}</td>*/}
-              {/*<td>{item.status}</td>*/}
+              {/*<td>{item.currentBalance}</td>
+              {/*<td>{item.status}</td>
               <td>
                 <Group spacing="sm">
                     <KhronDrawer title='Details' appearFrom='right' buttonVariant='subtle'>
@@ -78,10 +72,10 @@ const ContractTable = () => {
           <tr>
               <th style={{ width: 40 }}>
               </th>
-              {/*<th>Dapp Name</th>*/}
+              {/*<th>Dapp Name</th>
               <th>Contract Address</th>
-              {/*<th>Current Native Balance </th>*/}
-              {/*<th>Status</th>*/}
+              {/*<th>Current Native Balance </th>
+              {/*<th>Status</th>
               <th>
                 <Container>
                   <KhronDrawer 
@@ -103,4 +97,5 @@ const ContractTable = () => {
   );
 }
 
-export default ContractTable
+export default ContractTable */
+export default 0
