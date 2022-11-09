@@ -1,10 +1,8 @@
 import React from 'react'
 import { createStyles, Card, Text } from '@mantine/core';
 import RegisteredContracts from './RegisteredContracts';
-import AvgAlertsMonth from './AvgAlertsMonth';
-import AvgAlertsCostMonth from './AvgAlertsCostMonth';
 import UserAccount from './UserAccount';
-import NativeBalance from './NativeBalance';
+import LinkProvider from './LinkProvider';
 
 
 const useStyles = createStyles((theme) => ({
@@ -37,13 +35,10 @@ const UserCard = () => {
             <UserAccount/>
             <Card.Section className={classes.footer}></Card.Section>
             <>
-              <Text align='center' size="md" weight={700} className={classes.subTitle}>
-                Your Contracts
-              </Text>
               <RegisteredContracts/>
               <Card.Section className={classes.footer}></Card.Section>
             </>
-            <NativeBalance/>
+            <LinkProvider/>
         </Card>
   )
 }

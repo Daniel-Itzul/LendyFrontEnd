@@ -32,8 +32,8 @@ const KhronMenu = () => {
     const {classes} = useStyles();
     return (
         <div>
-            <Anchor href="https://docs.khronus.xyz" target="_blank" className={classes.mainLink}>Documentation</Anchor>
-            <Anchor href="https://docs.khronus.xyz/report" target="_blank"className={classes.mainLink}>Report Issues</Anchor>
+            <Anchor href="" target="_blank" className={classes.mainLink}>Documentation</Anchor>
+            <Anchor href="" target="_blank"className={classes.mainLink}>Report Issues</Anchor>
         </div>
     )
 }

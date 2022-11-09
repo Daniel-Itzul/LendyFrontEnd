@@ -16,11 +16,11 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-
 const NavKhron = () => { 
     const {classes} = useStyles();
     const { hasProvider } = useDapp();
     const button = hasProvider? <Connect></Connect>:<Button disabled >Connect</Button>
+    //const button = <Button disabled >Connect</Button>;
     return (
         <Container size={'xl'}>
             <Grid>

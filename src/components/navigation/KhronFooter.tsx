@@ -24,10 +24,9 @@ const useStyles = createStyles((theme) => ({
 const KhronFooter = () => {
   const { classes } = useStyles();
   const footerLinks = [
-    {label:"Terms", link:"https://docs.khronus.xyz/terms"},
-    {label:"Collaborate", link:"https://docs.khronus.xyz/collaborate"},
-    {label:"@KhronusProject", link:"https://twitter.com/KhronusProject"},
-    {label:"Tutorials", link:"https://www.youtube.com/channel/UCXPHShN7KaIGUT3QCZ9wcdQ"}
+    {label:"Terms", link:""},
+    {label:"Collaborate", link:""},
+    {label:"Tutorials", link:""}
 ]
   const items = footerLinks.map((link) => (
     <Anchor<'a'>
